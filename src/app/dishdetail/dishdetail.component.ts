@@ -41,6 +41,7 @@ export class DishdetailComponent implements OnInit {
   prev: string;
   next: string;
   commentForm: FormGroup;
+  dishcopy: Dish;
 
   constructor(private dishservice: DishService,
     private route: ActivatedRoute,
@@ -91,6 +92,11 @@ export class DishdetailComponent implements OnInit {
   onSubmit() {
   this.commentForm.value.date=(new Date()).toISOString();
    this.dish.comments.push(this.commentForm.value);
+    this.dishservice.putDish(this.dish)
+      .subscribe(dish => {
+        this.dish = dish;
+      },
+      errmess => { this.dish = null; this.errMess = <any>errmess; });
     this.commentFormDirective.resetForm();
   }
   setPrevNext(dishId: string) {
